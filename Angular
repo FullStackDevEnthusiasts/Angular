@@ -1126,3 +1126,600 @@ ing system to apply custom themes.
     - Facilitates dynamic interaction between the model and the view.
     - Enhances the responsiveness and interactivity of the application.
 
+96. **How do you handle memory leaks in Angular?**
+    - Unsubscribe from observables to prevent memory leaks.
+    - Example:
+      ```typescript
+      ngOnDestroy() {
+        this.subscription.unsubscribe();
+      }
+      ```
+    - Use `takeUntil` to manage observable subscriptions.
+    - Example:
+      ```typescript
+      private destroy$ = new Subject<void>();
+      ngOnInit() {
+        this.myService.getData().pipe(takeUntil(this.destroy$)).subscribe();
+      }
+      ngOnDestroy() {
+        this.destroy$.next();
+        this.destroy$.complete();
+      }
+      ```
+    - Clean up event listeners and DOM elements in `ngOnDestroy`.
+    - Use Angular's `ngOnDestroy` lifecycle hook for cleanup logic.
+
+97. **What are components in Angular?**
+    - Building blocks of an Angular application.
+    - Each component consists of a TypeScript class, an HTML template, and optional styles.
+    - Example:
+      ```typescript
+      @Component({
+        selector: 'app-example',
+        template: '<h1>Hello, {{name}}!</h1>',
+        styleUrls: ['./example.component.css']
+      })
+      export class ExampleComponent {
+        name: string = 'World';
+      }
+      ```
+    - Components encapsulate the view and behavior for a part of the UI.
+    - Facilitates modular, reusable, and maintainable code.
+
+98. **What are Angular services?**
+    - Singleton objects used to share data and functionality across components.
+    - Example:
+      ```typescript
+      @Injectable({ providedIn: 'root' })
+      export class DataService {
+        private data: string;
+        setData(data: string) { this.data = data; }
+        getData() { return this.data; }
+      }
+      ```
+    - Use `@Injectable` decorator to define a service.
+    - Services are injected into components or other services via dependency injection.
+    - Facilitates separation of concerns by moving business logic out of components.
+
+99. **What is the difference between Subject and BehaviorSubject in RxJS?**
+    - `Subject`: Does not hold a current value, emits values to new subscribers from the point of subscription.
+    - Example:
+      ```typescript
+      const subject = new Subject<number>();
+      subject.subscribe(value => console.log(value));
+      subject.next(1); // Output: 1
+      subject.next(2); // Output: 2
+      ```
+    - `BehaviorSubject`: Holds a current value, emits the latest value to new subscribers.
+    - Example:
+      ```typescript
+      const behaviorSubject = new BehaviorSubject<number>(0);
+      behaviorSubject.subscribe(value => console.log(value)); // Output: 0
+      behaviorSubject.next(1); // Output: 1
+      behaviorSubject.next(2); // Output: 2
+      ```
+    - `BehaviorSubject` is useful for representing state and sharing the latest value.
+    - Use `BehaviorSubject` when you need to provide an initial value or always have the latest value.
+
+100. **What is RxJS?**
+    - A library for reactive programming using observables.
+    - Provides tools for working with asynchronous and event-based data streams.
+    - Example of an observable:
+      ```typescript
+      const observable = new Observable(subscriber => {
+        subscriber.next('Hello');
+        subscriber.next('World');
+        subscriber.complete();
+      });
+      observable.subscribe(value => console.log(value)); // Output: Hello, World
+      ```
+    - Common operators include `map`, `filter`, `mergeMap`, `switchMap`, etc.
+    - Facilitates composing and transforming asynchronous data flows.
+
+101. **How do you use custom pipes in Angular components?**
+    - Define a custom pipe with the `@Pipe` decorator.
+    - Example:
+      ```typescript
+      @Pipe({name: 'capitalize'})
+      export class CapitalizePipe implements PipeTransform {
+        transform(value: string): string {
+          return value.charAt(0).toUpperCase() + value.slice(1);
+        }
+      }
+      ```
+    - Register the pipe in an Angular module.
+    - Use the custom pipe in templates:
+      ```html
+      <p>{{ 'hello' | capitalize }}</p> <!-- Output: Hello -->
+      ```
+    - Custom pipes enhance reusability and readability of transformation logic.
+
+102. **What are forms in Angular?**
+    - Mechanisms for handling user input and form validation.
+    - Types:
+      - Template-driven forms: Defined using directives in templates.
+      - Reactive forms: Defined using model-driven approach in TypeScript.
+    - Example of a reactive form:
+      ```typescript
+      this.form = this.fb.group({
+        name: ['', Validators.required],
+        age: ['', [Validators.required, Validators.min(18)]]
+      });
+      ```
+    - Provides tools for form control management, validation, and data binding.
+    - Facilitates building complex forms with dynamic and conditional validation.
+
+103. **Explain the use of switchMap and forkJoin operators in RxJS.**
+    - `switchMap`: Projects each source value to an observable and flattens the resulting observables, cancelling previous inner observables.
+    - Example:
+      ```typescript
+      this.searchTerm$.pipe(
+        switchMap(term => this.apiService.search(term))
+      ).subscribe(result => console.log(result));
+      ```
+    - `forkJoin`: Combines multiple observables and emits the final value as an array when all observables complete.
+    - Example:
+      ```typescript
+      forkJoin({
+        user: this.apiService.getUser(),
+        posts: this.apiService.getUserPosts()
+      }).subscribe(result => {
+        console.log(result.user);
+        console.log(result.posts);
+      });
+      ```
+    - `switchMap` is useful for handling dependent or sequential HTTP requests.
+    - `forkJoin` is useful for executing multiple HTTP requests in parallel and processing results together.
+
+104. **What is the difference between AOT (Ahead-of-Time) and JIT (Just-in-Time) compilation in Angular?**
+    - AOT: Compiles Angular templates and components at build time.
+      - Pros: Faster initial load, smaller bundle size, early error detection.
+    - JIT: Compiles Angular templates and components at runtime in the browser.
+      - Pros: More flexibility, no need for a separate build step for template compilation.
+    - Example:
+      ```bash
+      ng build --aot // Enables AOT compilation
+      ng serve // Uses JIT compilation
+      ```
+    - AOT is preferred for production builds due to performance benefits.
+    - JIT is commonly used during development for faster build cycles and debugging.
+
+105. **What is the purpose of ngFor trackBy in Angular?**
+    - Optimizes performance by tracking items in a collection by a unique identifier.
+    - Reduces the need for Angular to re-render the entire list when items change.
+    - Example:
+      ```html
+      <div *ngFor="let item of items; trackBy: trackById">
+        {{ item.name }}
+      </div>
+      ```
+      ```typescript
+      trackById(index: number, item: any): number {
+        return item.id;
+      }
+      ```
+    - Improves rendering performance for large lists and complex data structures.
+    - Ensures efficient change detection by minimizing unnecessary DOM manipulations.
+
+106. **What are validators in Angular reactive forms?**
+    - Functions that perform synchronous or asynchronous validation on form controls.
+    - Built-in validators include `Validators.required`, `Validators.minLength`, `Validators.maxLength`, `Validators.pattern`, etc.
+    - Example:
+      ```typescript
+      this.form = this.fb.group({
+        name: ['', Validators.required],
+        email: ['', [Validators.required, Validators.email]],
+        password: ['', [Validators.required, Validators.minLength(8)]]
+      });
+      ```
+    - Custom validators can be created to handle complex validation logic.
+    - Example of a custom validator:
+      ```typescript
+      import { AbstractControl, ValidatorFn } from '@angular/forms';
+      export function forbiddenNameValidator(nameRe: RegExp): ValidatorFn {
+        return (control: AbstractControl): {[key: string]: any} | null => {
+          const forbidden = nameRe.test(control.value);
+          return forbidden ? {'forbiddenName': {value: control.value}} : null;
+        };
+      }
+      this.form = this.fb.group({
+        username: ['', [Validators.required, forbiddenNameValidator(/admin/)]]
+      });
+      ```
+
+107. **How do you handle form data binding in Angular?**
+    - Use `FormControl` for individual form fields, `FormGroup` for groups of controls, and `FormArray` for arrays of controls.
+    - Example of a reactive form:
+      ```typescript
+      this.form = this.fb.group({
+        name: ['', Validators.required],
+        email: ['', [Validators.required, Validators.email]],
+        addresses: this.fb.array([this.createAddress()])
+      });
+      createAddress(): FormGroup {
+        return this.fb.group({
+          street: '',
+          city: '',
+          state: '',
+          zip: ''
+        });
+      }
+      addAddress(): void {
+        this.addresses.push(this.createAddress());
+      }
+      ```
+    - Use the `[(ngModel)]` directive for two-way data binding in template-driven forms.
+    - Example:
+      ```html
+      <input [(ngModel)]="name" name="name" required>
+      ```
+    - Helps in synchronizing form data between the model and the view.
+
+108. **What is the difference between template-driven forms and reactive forms in Angular?**
+    - **Template-driven forms**:
+      - Defined in the template using directives like `ngModel`.
+      - Example:
+        ```html
+        <form #form="ngForm" (ngSubmit)="onSubmit(form)">
+          <input type="text" ngModel name="name" required>
+        </form>
+        ```
+      - Simpler for basic forms but less control over form state and validation.
+    - **Reactive forms**:
+      - Defined in the component class using `FormGroup` and `FormControl`.
+      - Example:
+        ```typescript
+        this.form = this.fb.group({
+          name: ['', Validators.required],
+          email: ['', [Validators.required, Validators.email]]
+        });
+        ```
+      - Provides more control and flexibility for complex forms and dynamic validation.
+    - Reactive forms are preferred for larger, more complex forms requiring dynamic validation.
+
+109. **How do you set the value of specific fields in a form in Angular?**
+    - Use `setValue` to set the entire form or form group.
+    - Example:
+      ```typescript
+      this.form.setValue({
+        name: 'John Doe',
+        email: 'john@example.com',
+        address: {
+          street: '123 Main St',
+          city: 'Anytown'
+        }
+      });
+      ```
+    - Use `patchValue` to set specific fields or partial form.
+    - Example:
+      ```typescript
+      this.form.patchValue({
+        name: 'Jane Doe'
+      });
+      ```
+    - Use `setValue` for complete value updates and `patchValue` for partial updates.
+    - Ensures form controls are updated correctly and maintains form state.
+
+110. **Explain host binding and host listener in Angular.**
+    - **Host binding**: Binds a property to a host element property.
+    - Example:
+      ```typescript
+      @Component({
+        selector: 'app-example',
+        template: '<p>Hello, world!</p>'
+      })
+      export class ExampleComponent {
+        @HostBinding('class.active') isActive = true;
+      }
+      ```
+    - **Host listener**: Listens to events on the host element.
+    - Example:
+      ```typescript
+      @Component({
+        selector: 'app-example',
+        template: '<p>Click me!</p>'
+      })
+      export class ExampleComponent {
+        @HostListener('click') onClick() {
+          console.log('Element clicked');
+        }
+      }
+      ```
+    - Host binding and host listener simplify interaction with the host element.
+    - Helps in encapsulating component logic and styles.
+
+111. **Have you customized any Angular Material components, or have you created your own custom components using Angular Material?**
+    - Yes, Angular Material components can be customized using theming and CSS overrides.
+    - Example of theming:
+      ```typescript
+      @Component({
+        selector: 'app-custom-button',
+        template: '<button mat-button>Custom Button</button>',
+        styleUrls: ['./custom-button.component.scss']
+      })
+      export class CustomButtonComponent {}
+      ```
+    - Custom CSS can override default styles:
+      ```scss
+      .mat-button {
+        background-color: #4CAF50;
+        color: white;
+      }
+      ```
+    - Create custom components using Angular Material:
+      ```typescript
+      @Component({
+        selector: 'app-custom-dialog',
+        template: '<h1 mat-dialog-title>Custom Dialog</h1>',
+        styleUrls: ['./custom-dialog.component.scss']
+      })
+      export class CustomDialogComponent {}
+      ```
+    - Customization improves UI consistency and user experience.
+
+112. **What is the benefit of using subject in Angular?**
+    - Subjects are both observable and observer, allowing them to emit values to multiple subscribers.
+    - Example:
+      ```typescript
+      const subject = new Subject<string>();
+      subject.subscribe(value => console.log(`Observer 1: ${value}`));
+      subject.subscribe(value => console.log(`Observer 2: ${value}`));
+      subject.next('Hello'); // Output: Observer 1: Hello, Observer 2: Hello
+      ```
+    - Subjects facilitate multicasting, enabling multiple subscribers to receive the same values.
+    - Useful for implementing shared data streams and event buses.
+    - Enhances inter-component communication and state management.
+
+113. **What is the difference between reactive forms and template-driven forms in Angular?**
+    - **Template-driven forms**:
+      - Defined using directives in the template.
+      - Simpler and less code for basic forms.
+      - Example:
+        ```html
+        <form #form="ngForm" (ngSubmit)="onSubmit(form)">
+          <input type="text" ngModel name="name" required>
+        </form>
+        ```
+      - Suitable for simple use cases with minimal validation logic.
+    - **Reactive forms**:
+      - Defined using `FormGroup`, `FormControl`, and `FormBuilder` in the component.
+      - Provides more control and flexibility for complex forms.
+      - Example:
+        ```typescript
+        this.form = this.fb.group({
+          name: ['', Validators.required],
+          email: ['', [Validators.required, Validators.email]]
+        });
+        ```
+      - Ideal for complex scenarios requiring dynamic validation and advanced form control.
+    - Reactive forms are generally preferred for larger applications due to better control and testability.
+
+114. **What is an Angular interceptor, and how is it used?**
+    - Interceptors intercept and handle HTTP requests and responses.
+    - Used for logging, authentication, caching, and modifying requests/responses.
+    - Example:
+      ```typescript
+      @Injectable()
+      export class AuthInterceptor implements HttpInterceptor {
+        intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+          const clonedRequest = req.clone({
+            headers: req.headers.set('Authorization', 'Bearer token')
+          });
+          return next.handle(clonedRequest);
+        }
+      }
+      ```
+    - Provide interceptors in the Angular module:
+      ```typescript
+      @NgModule({
+        providers: [
+          { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+        ]
+      })
+      ```
+    - Interceptors enable centralized and reusable HTTP handling logic.
+
+115. **Explain the difference between NG build and NG serve and what is the difference between "ng serve" and "npm start"?**
+    - **ng build**:
+      - Compiles the application into an output directory.
+      - Produces optimized bundles for production.
+      - Example:
+        ```bash
+        ng build --prod
+        ```
+    - **ng serve**:
+      - Serves the application locally with live reload.
+      - Uses JIT compilation for faster development cycles.
+      - Example:
+        ```bash
+        ng serve
+        ```
+    - **npm start**:
+      - Runs the `start` script defined in `package.json`.
+      - Usually configured to run `ng serve`.
+      - Example:
+        ```json
+        "scripts": {
+          "start": "ng serve"
+        }
+        ```
+    - `ng build` is for production builds, while `ng serve` is for local development with live reload.
+    - `npm start` typically runs `ng serve` but can be customized for other tasks.
+
+116. **Why did Angular switch from AngularJS to TypeScript?**
+    - TypeScript offers static typing, which improves code quality and maintainability.
+    - Enhanced tooling support, including better autocompletion, refactoring, and debugging.
+    - TypeScript's features like classes, interfaces, and generics align with Angular's component-based architecture.
+    - Improved developer productivity with better error detection at compile time.
+    - Easier to adopt modern JavaScript features and syntax, ensuring future compatibility.
+
+117. **Can you explain the Angular lifecycle methods?**
+    - **ngOnInit**: Called once after the first `ngOnChanges` and initializes the component.
+    - **ngOnChanges**: Called when input properties change.
+    - **ngDoCheck**: Custom change detection logic can be implemented here.
+    - **ngAfterContentInit**: Called once after the content projection is initialized.
+    - **ngAfterContentChecked**: Called after each check of projected content.
+    - **ngAfterViewInit**: Called once after the component's view and child views are initialized.
+    - **ngAfterViewChecked**: Called after each check of the component's view and child views.
+    - **ngOnDestroy**: Cleanup logic before the component is destroyed.
+
+118. **What is the difference between ngDoCheck and ngOnChanges?**
+    - **ngOnChanges**:
+      - Called before `ngOnInit` and whenever input properties change.
+      - Receives a `SimpleChanges` object containing the current and previous values.
+      - Example:
+        ```typescript
+        ngOnChanges(changes: SimpleChanges) {
+          console.log(changes);
+        }
+        ```
+    - **ngDoCheck**:
+      - Called with every change detection run.
+      - Allows custom change detection logic.
+      - Example:
+        ```typescript
+        ngDoCheck() {
+          console.log('Custom change detection logic');
+        }
+        ```
+    - **ngOnChanges** is triggered by input property changes, while **ngDoCheck** is triggered by any change detection cycle.
+
+119. **How do you handle errors in a centralized manner in Angular?**
+    - Use Angular's global error handler by extending `ErrorHandler`.
+    - Example:
+      ```typescript
+      @Injectable()
+      export class GlobalErrorHandler implements ErrorHandler {
+        handleError(error: any): void {
+          // Custom error handling logic
+          console.error('An error occurred:', error);
+        }
+      }
+      ```
+    - Provide the custom error handler in the Angular module:
+      ```typescript
+      @NgModule({
+        providers: [
+          { provide: ErrorHandler, useClass: GlobalErrorHandler }
+        ]
+      })
+      ```
+    - Use HTTP interceptors for handling HTTP errors.
+    - Example:
+      ```typescript
+      @Injectable()
+      export class HttpErrorInterceptor implements HttpInterceptor {
+        intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+          return next.handle(req).pipe(
+            catchError((error: HttpErrorResponse) => {
+              // Custom HTTP error handling logic
+              return throwError(error);
+            })
+          );
+        }
+      }
+      ```
+    - Centralized error handling improves maintainability and consistency.
+
+120. **Explain currying with an example.**
+    - Currying transforms a function with multiple arguments into a sequence of functions, each with a single argument.
+    - Example:
+      ```typescript
+      function add(a: number) {
+        return function(b: number) {
+          return a + b;
+        };
+      }
+      const add5 = add(5);
+      console.log(add5(3)); // Output: 8
+      ```
+    - Curried functions allow partial application of arguments.
+    - Example:
+      ```typescript
+      function multiply(a: number) {
+        return function(b: number) {
+          return a * b;
+        };
+      }
+      const double = multiply(2);
+      console.log(double(4)); // Output: 8
+      ```
+    - Currying enhances reusability and modularity of functions.
+
+121. **How would you inject a dynamic script into an Angular application without using any built-in functions?**
+    - Create a service to dynamically load scripts.
+    - Example:
+      ```typescript
+      @Injectable()
+      export class ScriptService {
+        loadScript(url: string): Promise<void> {
+          return new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = url;
+            script.onload = () => resolve();
+            script.onerror = () => reject();
+            document.head.appendChild(script);
+          });
+        }
+      }
+      ```
+    - Use the service in a component to load the script.
+    - Example:
+      ```typescript
+      constructor(private scriptService: ScriptService) {}
+      ngOnInit() {
+        this.scriptService.loadScript('https://example.com/script.js')
+          .then(() => console.log('Script loaded successfully'))
+          .catch(() => console.error('Script loading failed'));
+      }
+      ```
+    - Dynamic script loading enhances flexibility and allows integration of third-party libraries.
+
+122. **How do you conditionally apply classes in Angular templates?**
+    - Use `[ngClass]` directive for conditional class application.
+    - Example:
+      ```html
+      <div [ngClass]="{'active': isActive, 'disabled': isDisabled}">
+        Conditionally styled div
+      </div>
+      ```
+    - Apply classes based on component properties.
+    - Example:
+      ```typescript
+      isActive = true;
+      isDisabled = false;
+      ```
+    - Use ternary operators for simpler conditions.
+    - Example:
+      ```html
+      <div [ngClass]="isActive ? 'active' : 'inactive'">
+        Conditionally styled div
+      </div>
+      ```
+    - Enhances dynamic styling based on application state.
+
+123. **How to upgrade Angular applications?**
+    - Use Angular CLI for version updates.
+    - Example:
+      ```bash
+      ng update @angular/cli @angular/core
+      ```
+    - Follow Angular's official upgrade guide for detailed steps.
+    - Review breaking changes and update code accordingly.
+    - Update third-party dependencies to compatible versions.
+    - Test the application thoroughly after the upgrade to ensure stability.
+
+124. **What is a model in Angular?**
+    - A model represents the data structure used in an application.
+    - Defined using TypeScript interfaces or classes.
+    - Example:
+      ```typescript
+      export interface User {
+        id: number;
+        name: string;
+        email: string;
+      }
+      ```
+    - Models facilitate type-checking and data consistency.
+    - Used to define the shape of data exchanged between components and services.
+    - Enhances maintainability and readability of the codebase.
