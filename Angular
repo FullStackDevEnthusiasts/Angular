@@ -1,0 +1,1128 @@
+1. **How to pass data from one component to another component in Angular?**
+   - Use `@Input()` to pass data from parent to child.
+   - Use `@Output()` and `EventEmitter` to pass data from child to parent.
+   - Utilize property binding to bind data to child component properties.
+   - Example: `<app-child [data]="parentData" (dataEvent)="receiveData($event)"></app-child>`.
+   - Ensure child component has corresponding `@Input` and `@Output` properties.
+
+2. **How do you pass data between multiple components in Angular?**
+   - Create a shared service to hold and manage the data.
+   - Use `BehaviorSubject` or `Subject` in the service to emit data changes.
+   - Inject the service into the components that need to share data.
+   - Subscribe to the service’s observable in the components to receive data.
+   - Update the shared service’s data from any component.
+
+3. **How do you handle data sharing between sibling components in Angular?**
+   - Use a shared service with `Subject` or `BehaviorSubject` to manage data.
+   - Inject the shared service into both sibling components.
+   - Sibling 1 updates the data through the service.
+   - Sibling 2 subscribes to the data changes via the service.
+   - This approach ensures siblings can communicate without direct interaction.
+
+4. **What are signals in Angular? How to convert signals to observable in Angular?**
+   - Signals manage state and notify when changes occur.
+   - Convert signals to observables using RxJS `from` function.
+   - Signals provide a declarative way to handle state changes.
+   - Example: `const observable = from(signal)`.
+   - Use observables for reactive programming and asynchronous operations.
+
+5. **Do you know about server-side rendering (SSR) in Angular? Implemented?**
+   - SSR improves SEO and initial load time by rendering on the server.
+   - Implement SSR with Angular Universal using `ng add @nguniversal/express-engine`.
+   - SSR pre-renders the HTML on the server before sending it to the client.
+   - This approach enhances performance and crawlability by search engines.
+   - The server sends a fully rendered page to the browser, which then bootstraps the Angular app.
+
+6. **What is defer view in Angular?**
+   - Defer view is an optimization technique.
+   - It delays rendering of certain parts of the DOM until necessary.
+   - Enhances performance by reducing initial load time.
+   - Useful for large components or parts of the app not immediately visible.
+   - Can be managed with techniques like lazy loading.
+
+7. **What is control flow template in Angular?**
+   - Structural directives like `*ngIf`, `*ngFor`, `*ngSwitch` manage control flow.
+   - They conditionally add or remove elements in the DOM.
+   - Provide a way to handle rendering logic directly in the template.
+   - Example: `<div *ngIf="condition">Content</div>`.
+   - Simplify dynamic content management in Angular templates.
+
+8. **What is app config in Angular?**
+   - Configuration settings for an Angular app.
+   - Defined in `environment.ts` files for different environments (e.g., dev, prod).
+   - Helps manage environment-specific settings and variables.
+   - Example: `export const environment = { production: false, apiUrl: 'http://dev.api.com' };`.
+   - Allows easy switching between configurations without changing the code.
+
+9. **What is Angular Material UI?**
+   - A UI component library for Angular.
+   - Follows Google's Material Design principles.
+   - Provides pre-built, customizable UI components like buttons, forms, and dialogs.
+   - Simplifies the process of building responsive, attractive UIs.
+   - Installation: `ng add @angular/material`.
+
+10. **How to use services and interceptors in a Standalone template in Angular?**
+    - Register services in the `providers` array of a standalone component.
+    - Use `HTTP_INTERCEPTORS` to add interceptors.
+    - Example: `@Component({ providers: [{ provide: HTTP_INTERCEPTORS, useClass: MyInterceptor, multi: true }] })`.
+    - Services manage business logic and data access.
+    - Interceptors handle HTTP request and response transformation globally.
+
+11. **What is RxJS?**
+    - Reactive Extensions for JavaScript.
+    - A library for reactive programming using observables.
+    - Facilitates asynchronous operations and event handling.
+    - Provides operators for transforming, filtering, and combining streams.
+    - Widely used in Angular for handling HTTP requests and event streams.
+
+12. **What is an observable in RxJS?**
+    - A stream of data that can be observed over time.
+    - Can emit multiple values asynchronously.
+    - Observables are lazy and only emit values when subscribed to.
+    - They can handle a variety of data sources like events, HTTP requests, and more.
+    - Example: `const observable = new Observable(observer => { observer.next('data'); observer.complete(); });`.
+
+13. **Explain hot and cold observables in RxJS.**
+    - Hot observables emit values regardless of subscribers.
+    - Cold observables start emitting values only when there are subscribers.
+    - Hot observables share the same execution context among all subscribers.
+    - Cold observables create a new execution context for each subscriber.
+    - Example: HTTP request observable is cold, while a WebSocket stream is hot.
+
+14. **Commonly used RxJS operators?**
+    - `map`: Transforms each value from the source observable.
+    - `filter`: Emits values that pass a predicate function.
+    - `switchMap`: Projects each value to an observable and cancels previous ones.
+    - `mergeMap`: Projects each value to an observable and flattens them into a single stream.
+    - `catchError`: Handles errors from the source observable and provides a fallback value or observable.
+
+15. **Explain the use of switchMap and forkJoin operators in RxJS.**
+    - `switchMap`: Switches to a new observable, canceling the previous one.
+    - Useful for handling dependent async operations like HTTP requests.
+    - `forkJoin`: Waits for multiple observables to complete and emits their last values.
+    - Ideal for combining results from multiple sources once they all complete.
+    - Example: `forkJoin([obs1$, obs2$]).subscribe(([res1, res2]) => { /* handle results */ });`.
+
+16. **What is the difference between Subject and BehaviorSubject in RxJS?**
+    - `Subject`: Emits new values to subscribers without retaining them.
+    - `BehaviorSubject`: Emits the latest value to new subscribers immediately.
+    - `Subject` is useful for simple event handling.
+    - `BehaviorSubject` is suitable for managing state.
+    - `BehaviorSubject` requires an initial value upon creation.
+
+17. **Explain the difference between observables, subjects, and behavior subjects in Angular.**
+    - Observables: Stream data values, lazy, multicast to multiple subscribers.
+    - Subjects: Act as both observable and observer, emit values to multiple subscribers.
+    - BehaviorSubjects: Retain the latest value, emit it to new subscribers immediately.
+    - Use observables for data streams like HTTP requests.
+    - Use subjects and behavior subjects for component communication and state management.
+
+18. **Purpose and usage of BehaviorSubject and ReplaySubject in Angular?**
+    - `BehaviorSubject`: Maintain and provide the latest state to new subscribers.
+    - Emit the current value immediately upon subscription.
+    - `ReplaySubject`: Cache and emit a specified number of past values to new subscribers.
+    - Useful for scenarios where subscribers need historical data.
+    - Example: `const replaySubject = new ReplaySubject(3); replaySubject.next('value1');`.
+
+19. **What is Angular? What are the advantages of Angular?**
+    - Angular is a platform and framework for building single-page client applications using HTML and TypeScript.
+    - Advantages:
+      - Two-way data binding simplifies data handling.
+      - Dependency injection improves code modularity and testability.
+      - Built-in directives and components enhance productivity.
+      - TypeScript offers static typing, reducing runtime errors.
+      - Angular CLI streamlines development and project management.
+
+20. **What is Angular CLI? How does Angular CLI handle component dependencies when you add a component to your project?**
+    - Angular CLI is a command-line interface tool to initialize, develop, scaffold, and maintain Angular applications.
+    - Automatically updates `app.module.ts` to include the new component.
+    - Adds the new component to the declarations array.
+    - Provides commands to generate components, services, and other artifacts.
+    - Simplifies project setup and configuration with sensible defaults.
+
+21. **How do you create a standalone component using Angular CLI?**
+    - Use the command: `ng generate component component-name --standalone`.
+    - This creates a component that is not declared in any NgModule.
+    - It can be used directly in other components or applications.
+    - Standalone components have their own imports and providers.
+    - Example: `ng g c my-standalone --standalone`.
+
+22. **What are life cycle hooks in Angular?**
+    - Angular provides hooks to tap into different phases of a component's lifecycle.
+    - Common hooks:
+      - `ngOnInit()`: Called after component initialization.
+      - `ngOnChanges()`: Called when input properties change.
+      - `ngDoCheck()`: Called during every change detection run.
+      - `ngOnDestroy()`: Called just before the component is destroyed.
+    - These hooks allow you to run custom logic at specific points in a component's lifecycle.
+
+23. **What is the latest version of Angular? What are the new features in Angular 17?**
+    - Angular 17 is the latest version as of this writing.
+    - New features include:
+      - Improved performance and smaller bundle sizes.
+      - Enhanced support for standalone components and APIs.
+      - Simplified configuration and setup for Angular Universal.
+      - New directives for better template control and conditional rendering.
+      - Updated Angular Material components and theming options.
+
+24. **What are pipes in Angular? Describe the difference between pure and impure pipes in Angular.**
+    - Pipes transform data in templates.
+    - Pure pipes: Only re-evaluate when input changes; default type.
+    - Impure pipes: Re-evaluate on every change detection run.
+    - Pure pipes are more performant but less flexible.
+    - Example of pure pipe: `{{ value | uppercase }}`
+    - Example of impure pipe: `@Pipe({name: 'impurePipe', pure: false})`
+
+25. **When would you use each type of pipe, and what are the implications for performance?**
+    - Use pure pipes for data that doesn’t change often to optimize performance.
+    - Use impure pipes for dynamic data that changes frequently.
+    - Pure pipes ensure fewer re-calculations, enhancing performance.
+    - Impure pipes can cause performance issues if overused due to frequent re-evaluations.
+    - Evaluate the trade-off between data freshness and performance needs.
+
+26. **Have you heard about async pipes? Can you explain if they are pure or impure?**
+    - Async pipes automatically subscribe to and handle observable streams.
+    - They are considered impure because they update the view whenever a new value is emitted.
+    - Simplify handling of observables in templates.
+    - Example: `{{ observable$ | async }}`
+    - They manage subscription and unsubscription, preventing memory leaks.
+
+27. **How do you use custom pipes in Angular components?**
+    - Create a custom pipe with the `@Pipe` decorator.
+    - Implement the `transform` method for data transformation.
+    - Declare the pipe in an NgModule or as a standalone.
+    - Use the custom pipe in templates: `{{ value | customPipe }}`.
+    - Example: 
+      ```typescript
+      @Pipe({name: 'customPipe'})
+      export class CustomPipe implements PipeTransform {
+        transform(value: string): string {
+          return value.toUpperCase();
+        }
+      }
+      ```
+
+28. **What are the types of subjects in Angular?**
+    - `Subject`: Basic subject without initial value.
+    - `BehaviorSubject`: Holds the latest value and emits it to new subscribers.
+    - `ReplaySubject`: Replays a specified number of past values to new subscribers.
+    - `AsyncSubject`: Emits the last value to subscribers when the observable completes.
+    - These subjects are part of RxJS and used for various scenarios in Angular applications.
+
+29. **What is the benefit of using subject in Angular?**
+    - Facilitates communication between components.
+    - Acts as both an observable and an observer.
+    - Allows multicasting to multiple subscribers.
+    - Useful for implementing event buses and shared services.
+    - Enhances reactivity and state management in Angular applications.
+
+30. **Can you explain the difference between AOT (Ahead-of-Time) and JIT (Just-in-Time) compilation in Angular?**
+    - AOT compiles the application during the build process.
+    - JIT compiles the application in the browser at runtime.
+    - AOT improves load time and security by reducing the need for the Angular compiler in the client.
+    - JIT is useful during development for faster builds and ease of debugging.
+    - AOT is generally preferred for production deployments due to its performance benefits.
+
+31. **ngrx? How to use ngrx in a Standalone template in Angular?**
+    - NgRx is a state management library for Angular based on Redux.
+    - Install NgRx with `npm install @ngrx/store @ngrx/effects`.
+    - Define actions, reducers, and selectors for state management.
+    - Register the store in your standalone component’s `providers` array.
+    - Use NgRx effects for handling side effects like HTTP requests.
+    - Example: 
+      ```typescript
+      @Component({
+        standalone: true,
+        providers: [provideStore({ reducer }), provideEffects([MyEffects])]
+      })
+      export class MyComponent { }
+      ```
+
+32. **What is an Angular interceptor, and how is it used?**
+    - Interceptors intercept HTTP requests and responses.
+    - Implement the `HttpInterceptor` interface.
+    - Use the `intercept` method to modify requests or responses.
+    - Register interceptors in the `providers` array with `HTTP_INTERCEPTORS`.
+    - Example: 
+      ```typescript
+      @Injectable()
+      export class AuthInterceptor implements HttpInterceptor {
+        intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+          const clonedReq = req.clone({ headers: req.headers.set('Authorization', 'Bearer token') });
+          return next.handle(clonedReq);
+        }
+      }
+      ```
+
+33. **Explain the concept of interceptor hierarchy in Angular.**
+    - Interceptors are executed in the order they are provided.
+    - Multiple interceptors can be layered to handle different concerns.
+    - The order of execution can be controlled by the order of providers.
+    - Subsequent interceptors can modify the request/response further.
+    - Allows separation of concerns, such as authentication, logging, and error handling.
+
+34. **How do interceptors intercept HTTP requests and responses?**
+    - Interceptors modify the `HttpRequest` object before passing it to the next handler.
+    - They can also modify the `HttpResponse` object before it reaches the application.
+    - Use `HttpHandler` to forward the modified request or response.
+    - Provide a mechanism to globally handle authentication, logging, etc.
+    - Interceptors must return an observable that completes.
+
+35. **How does routing work with standalone components?**
+    - Define routes in the standalone component using `RouterModule`.
+    - Example: 
+      ```typescript
+      @Component({
+        standalone: true,
+        imports: [RouterModule.forRoot(routes)],
+        template: '<router-outlet></router-outlet>'
+      })
+      export class AppComponent { }
+      ```
+    - Configure the routes array with component mappings.
+    - Use `routerLink` directives to navigate between routes.
+    - Standalone components can be used as route targets directly.
+
+36. **What is Standalone template in Angular? Explain how bootstrapping works with standalone components.**
+    - Standalone templates allow components to be used without declaring them in NgModules.
+    - Bootstrapping standalone components involves using `bootstrapApplication` instead of `bootstrapModule`.
+    - Simplifies component usage and reduces the need for NgModules.
+    - Example: 
+      ```typescript
+      bootstrapApplication(AppComponent);
+      ```
+    - Standalone components include their own dependencies and configurations.
+
+37. **What are standalone components in Angular?**
+    - Components that are not declared in any NgModule.
+    - Can be used independently or in combination with other standalone components.
+    - Include their own dependencies and providers.
+    - Simplify modularization and reuse of components.
+    - Introduced to reduce the overhead of NgModules and streamline Angular applications.
+
+38. **What is formBuilder in Angular, and how is it used?**
+    - FormBuilder is a service for creating form controls in Angular.
+    - Simplifies the creation of `FormGroup`, `FormControl`, and `FormArray`.
+    - Provides methods like `group`, `control`, and `array` to initialize forms.
+    - Example: 
+      ```typescript
+      this.form = this.fb.group({
+        name: ['', Validators.required],
+        age: [null, Validators.min(0)]
+      });
+      ```
+    - Reduces boilerplate code when setting up reactive forms.
+
+39. **What is the purpose of FormBuilder and FormGroup?**
+    - `FormBuilder` helps in creating and managing form controls.
+    - `FormGroup` is a collection of form controls that can be validated as a group.
+    - Use `FormBuilder` to instantiate `FormGroup` with a configuration object.
+    - Simplifies reactive form setup and management.
+    - Example: 
+      ```typescript
+      const form = this.fb.group({
+        firstName: ['', Validators.required],
+        lastName: ['', Validators.required]
+      });
+      ```
+
+40. **How do you improve the performance of an Angular application?**
+    - Use lazy loading to load modules only when needed.
+    - Implement OnPush change detection strategy to reduce change detection cycles.
+    - Optimize bundle size using tree shaking and AOT compilation.
+    - Avoid unnecessary data binding and DOM manipulation.
+    - Use Angular CLI build optimizations like production mode (`ng build --prod`).
+
+41. **What steps do you take to optimize the performance of your Angular project if it's taking too much time to load?**
+    - Implement code splitting and lazy loading.
+    - Minimize and compress assets (images, CSS, JavaScript).
+    - Optimize change detection by using `OnPush` strategy.
+    - Remove unused dependencies and code.
+    - Enable AOT compilation and tree shaking for smaller bundle sizes.
+
+42. **What are directives in Angular, and what are the different types?**
+    - Directives are classes that add behavior to elements in Angular templates.
+    - Three types:
+      - Component directives (with a template).
+      - Structural directives (like `ngIf`, `ngFor`) that change the DOM structure.
+      - Attribute directives (like `ngClass`, `ngStyle`) that change the appearance or behavior of elements.
+    - Directives extend HTML with custom attributes and elements.
+    - Example of custom directive: 
+      ```typescript
+      @Directive({
+        selector: '[appHighlight]'
+      })
+      export class HighlightDirective {
+        @HostBinding('style.backgroundColor') bgColor = 'yellow';
+      }
+      ```
+
+43. **Explain structural and behavioral directives.**
+    - Structural directives change the DOM layout by adding or removing elements.
+    - Examples: `*ngIf`, `*ngFor`, `*ngSwitch`.
+    - Behavioral (attribute) directives change the appearance or behavior of elements.
+    - Examples: `ngClass`, `ngStyle`.
+    - Structural directives modify the structure, while attribute directives modify attributes.
+
+44. **What are the ngIf, ngFor, and ngSwitch directives used for?**
+    - `ngIf`: Conditionally includes an element in the DOM.
+      - Example: `<div *ngIf="condition">Content</div>`.
+    - `ngFor`: Repeats a template for each item in a list.
+      - Example: `<div *ngFor="let item of items">{{ item }}</div>`.
+    - `ngSwitch`: Conditionally switches between multiple templates.
+      - Example: 
+        ```html
+        <div [ngSwitch]="value">
+          <div *ngSwitchCase="1">Case 1</div>
+          <div *ngSwitchCase="2">Case 2</div>
+          <div *ngSwitchDefault>Default</div>
+        </div>
+        ```
+
+45. **Custom directives in Angular?**
+    - Custom directives allow you to create reusable behavior and appearance modifications.
+    - Created with the `@Directive` decorator.
+    - Example: 
+      ```typescript
+      @Directive({
+        selector: '[appHighlight]'
+      })
+      export class HighlightDirective {
+        @HostBinding('style.backgroundColor') bgColor: string;
+
+        @HostListener('mouseenter') onMouseEnter() {
+          this.bgColor = 'yellow';
+        }
+
+        @HostListener('mouseleave') onMouseLeave() {
+          this.bgColor = 'transparent';
+        }
+      }
+      ```
+    - Use custom directives to encapsulate and reuse common behaviors.
+
+
+46. **How can you use zone.js for asynchronous programming in Angular? How does it affect change detection?**
+    - Zone.js patches asynchronous APIs to capture async operations and keep track of their context.
+    - Angular uses Zone.js to automatically trigger change detection after async tasks complete.
+    - It allows automatic synchronization between the model and the view.
+    - Simplifies handling of asynchronous tasks without manually managing change detection.
+    - Improves the developer experience by reducing boilerplate code for updates.
+
+47. **What is the purpose of using guards in Angular routing? Can you explain their types and usage?**
+    - Guards control navigation to and from routes.
+    - Types:
+      - `CanActivate`: Prevents navigation to a route.
+      - `CanDeactivate`: Prevents leaving a route.
+      - `Resolve`: Fetches data before route activation.
+      - `CanLoad`: Prevents loading of lazy-loaded routes.
+    - Example: 
+      ```typescript
+      @Injectable()
+      export class AuthGuard implements CanActivate {
+        canActivate(): boolean {
+          return this.authService.isLoggedIn();
+        }
+      }
+      ```
+    - Guards ensure secure and efficient routing in applications.
+
+48. **What are Angular services?**
+    - Services provide shared functionality across components.
+    - Used for data sharing, business logic, and API communication.
+    - Created with the `@Injectable` decorator.
+    - Example: 
+      ```typescript
+      @Injectable()
+      export class DataService {
+        getData() {
+          return this.http.get('/api/data');
+        }
+      }
+      ```
+    - Services enhance modularity and reusability in Angular applications.
+
+49. **How to pass headers in Angular services?**
+    - Use `HttpHeaders` to set headers for HTTP requests.
+    - Example: 
+      ```typescript
+      const headers = new HttpHeaders().set('Authorization', 'Bearer token');
+      this.http.get('/api/data', { headers });
+      ```
+    - Headers can be set for individual requests or globally using interceptors.
+    - Allows for secure and authenticated communication with APIs.
+
+50. **Can you discuss your experience with Angular services and dependency injection?**
+    - Angular services are pivotal for modular and maintainable code.
+    - Dependency injection (DI) allows services to be injected into components and other services.
+    - DI improves testability by allowing mock implementations.
+    - Services handle business logic, API calls, and shared state management.
+    - Example: Injecting a service into a component:
+      ```typescript
+      constructor(private dataService: DataService) { }
+      ```
+
+51. **What is the `@Injectable` decorator in Angular services?**
+    - Marks a class as available to be provided and injected as a dependency.
+    - Enables Angular’s DI system to resolve dependencies.
+    - Can specify the providedIn option to control the service’s scope.
+    - Example: 
+      ```typescript
+      @Injectable({
+        providedIn: 'root'
+      })
+      export class AuthService { }
+      ```
+    - Ensures that services are provided in the appropriate context.
+
+52. **How do you handle errors in Angular services?**
+    - Use RxJS `catchError` operator to handle errors in HTTP requests.
+    - Example: 
+      ```typescript
+      this.http.get('/api/data').pipe(
+        catchError(error => {
+          console.error('Error occurred:', error);
+          return throwError(error);
+        })
+      );
+      ```
+    - Implement global error handling with interceptors.
+    - Provide user-friendly error messages and log errors for debugging.
+    - Use retry mechanisms for transient errors.
+
+53. **Can we inject a service without using the constructor in a component?**
+    - Yes, by using the `inject` function introduced in Angular 14.
+    - Example: 
+      ```typescript
+      import { inject } from '@angular/core';
+
+      @Component({ ... })
+      export class MyComponent {
+        private myService = inject(MyService);
+      }
+      ```
+    - This provides a more flexible and concise way to inject services.
+    - Useful in scenarios where constructor injection is not possible or practical.
+
+54. **What are some common class decorators in Angular?**
+    - `@Component`: Defines a component.
+    - `@Directive`: Defines a directive.
+    - `@Pipe`: Defines a pipe.
+    - `@Injectable`: Marks a class as injectable for DI.
+    - `@NgModule`: Defines an Angular module.
+    - Example: 
+      ```typescript
+      @Component({
+        selector: 'app-my-component',
+        template: '<div>My Component</div>'
+      })
+      export class MyComponent { }
+      ```
+
+55. **Can you provide examples of when you would use each decorator?**
+    - `@Component`: Use to create a new UI component.
+    - `@Directive`: Use to create reusable behavior to apply to elements.
+    - `@Pipe`: Use to create custom transformations for template values.
+    - `@Injectable`: Use to make a class available for DI.
+    - `@NgModule`: Use to define a module that bundles components, directives, pipes, and services.
+
+56. **Can you explain the purpose of host binding and host listener decorators?**
+    - `@HostBinding`: Binds a property to the host element.
+    - Example: 
+      ```typescript
+      @Directive({
+        selector: '[appHighlight]'
+      })
+      export class HighlightDirective {
+        @HostBinding('style.backgroundColor') bgColor = 'yellow';
+      }
+      ```
+    - `@HostListener`: Listens to events on the host element.
+    - Example: 
+      ```typescript
+      @Directive({
+        selector: '[appHighlight]'
+      })
+      export class HighlightDirective {
+        @HostListener('mouseenter') onMouseEnter() {
+          this.bgColor = 'yellow';
+        }
+      }
+      ```
+    - Both decorators enhance interaction and control over the host element.
+
+57. **How do you handle CORS errors in Angular?**
+    - Configure the backend server to allow cross-origin requests.
+    - Use `HttpHeaders` to set appropriate headers in Angular HTTP requests.
+    - Example:
+      ```typescript
+      const headers = new HttpHeaders().set('Access-Control-Allow-Origin', '*');
+      this.http.get('/api/data', { headers });
+      ```
+    - Use proxies during development to bypass CORS issues.
+    - Ensure proper configuration on both client and server sides to resolve CORS errors.
+
+58. **What is the purpose of Angular's view encapsulation?**
+    - Encapsulates component styles to prevent them from affecting other components.
+    - Types:
+      - `Emulated`: Default, emulates Shadow DOM behavior using scoped styles.
+      - `None`: No encapsulation, styles affect the global scope.
+      - `ShadowDom`: Uses native Shadow DOM for true encapsulation.
+    - Example:
+      ```typescript
+      @Component({
+        selector: 'app-my-component',
+        encapsulation: ViewEncapsulation.Emulated,
+        template: '<div>My Component</div>'
+      })
+      export class MyComponent { }
+      ```
+    - Enhances component isolation and style scoping.
+
+59. **What is a shared module in Angular?**
+    - A module that exports commonly used components, directives, pipes, and services.
+    - Simplifies reusability and reduces code duplication.
+    - Import shared module into other feature modules as needed.
+    - Example:
+      ```typescript
+      @NgModule({
+        declarations: [CommonComponent],
+        exports: [CommonComponent],
+        imports: [CommonModule]
+      })
+      export class SharedModule { }
+      ```
+    - Promotes DRY (Don't Repeat Yourself) principles in Angular applications.
+
+60. **Can you explain lazy loading in Angular and how it works?**
+    - Lazy loading delays the loading of feature modules until they are needed.
+    - Improves initial load time by reducing the size of the main bundle.
+    - Configure lazy loading in the routing module with `loadChildren`.
+    - Example:
+      ```typescript
+      const routes: Routes = [
+        { path: 'feature', loadChildren: () => import('./feature/feature.module').then(m => m.FeatureModule) }
+      ];
+      ```
+    - Lazy loading optimizes performance by loading code on demand.
+
+61. **Can you explain the concept of property binding, event binding, and interpolation in Angular? What is two-way binding?**
+    - Property binding: Binds a property to an element attribute.
+      - Example: `<input [value]="value">`.
+    - Event binding: Binds an event to a method.
+      - Example: `<button (click)="handleClick()">Click</button>`.
+    - Interpolation: Inserts expressions into the template.
+      - Example: `{{ value }}`.
+    - Two-way binding: Combines property and event binding using `ngModel`.
+      - Example: `<input [(ngModel)]="value">`.
+    - Enables dynamic interaction between the model and the view.
+
+62. **What are components in Angular?**
+    - Building blocks of Angular applications.
+    - Consist of a template, styles, and logic.
+    - Defined with the `@Component` decorator.
+    - Example:
+      ```typescript
+      @Component({
+        selector: 'app-my-component',
+        template: '<div>My Component</div>',
+        styles: ['div { color: red; }']
+      })
+      export class MyComponent { }
+      ```
+    - Components encapsulate UI and behavior.
+
+63. **Have you customized any Angular Material components, or have you created your own custom components using Angular Material?**
+    - Yes, customize Angular Material components by overriding CSS styles.
+    - Example: 
+      ```css
+      .mat-button {
+        background-color: blue;
+      }
+      ```
+    - Create custom components using Angular Material's design system.
+    - Use Angular Material's them
+
+ing system to apply custom themes.
+    - Customize component templates and styles as per requirements.
+    - Ensures a consistent look and feel across the application.
+
+64. **How can you use Angular CLI to generate a new component, service, or module?**
+    - Generate a new component:
+      - Command: `ng generate component my-component`
+    - Generate a new service:
+      - Command: `ng generate service my-service`
+    - Generate a new module:
+      - Command: `ng generate module my-module`
+    - CLI automates scaffolding of Angular components, services, and modules.
+    - Example:
+      ```sh
+      ng generate component my-component
+      ```
+    - Ensures adherence to Angular's best practices and conventions.
+
+65. **What are the different types of modules in Angular?**
+    - Root module: Bootstraps the Angular application.
+    - Feature module: Encapsulates a specific feature of the application.
+    - Shared module: Contains common components, directives, pipes, and services.
+    - Core module: Contains singleton services and application-wide providers.
+    - Lazy-loaded module: Loaded on demand to optimize performance.
+    - Each module serves a distinct purpose and enhances modularity and maintainability.
+
+66. **What are the best practices for structuring Angular applications?**
+    - Organize code by feature modules.
+    - Use shared and core modules for reusable components and services.
+    - Implement lazy loading for feature modules.
+    - Follow Angular Style Guide for naming conventions and code organization.
+    - Use services for business logic and state management.
+    - Use Angular CLI for project scaffolding and consistent code structure.
+
+67. **What is the use of Angular Schematics?**
+    - Tool for code generation and transformations.
+    - Used by Angular CLI to generate and modify code files.
+    - Custom schematics can automate repetitive tasks and enforce best practices.
+    - Example: Create a schematic to generate a custom component structure.
+    - Schematics enhance productivity and maintain code consistency.
+
+68. **What is the role of Angular Elements?**
+    - Angular Elements allows Angular components to be used as custom elements (web components).
+    - Facilitates integration of Angular components in non-Angular environments.
+    - Example:
+      ```typescript
+      import { createCustomElement } from '@angular/elements';
+      const myElement = createCustomElement(MyComponent, { injector: this.injector });
+      customElements.define('my-element', myElement);
+      ```
+    - Enables reuse of Angular components across different projects and frameworks.
+
+69. **What is Angular Universal, and why is it used?**
+    - Angular Universal provides server-side rendering (SSR) for Angular applications.
+    - Improves performance and SEO by rendering pages on the server.
+    - Example:
+      ```typescript
+      import { renderModule } from '@angular/platform-server';
+      renderModule(AppServerModule, { document: '<app-root></app-root>', url: '/' })
+        .then(html => console.log(html));
+      ```
+    - Enhances user experience with faster initial page loads and better search engine indexing.
+
+70. **What are Angular animations, and how are they implemented?**
+    - Angular animations create dynamic effects within the application.
+    - Defined using the `@angular/animations` module.
+    - Example:
+      ```typescript
+      import { trigger, state, style, transition, animate } from '@angular/animations';
+      @Component({
+        selector: 'app-my-component',
+        template: '<div [@fadeInOut]="state">Content</div>',
+        animations: [
+          trigger('fadeInOut', [
+            state('in', style({ opacity: 1 })),
+            transition(':enter', [ style({ opacity: 0 }), animate('500ms ease-in') ]),
+            transition(':leave', [ animate('500ms ease-out', style({ opacity: 0 })) ])
+          ])
+        ]
+      })
+      export class MyComponent { }
+      ```
+    - Enhance user experience by adding visual feedback and transitions.
+71. **What is the purpose of the environment.ts file in Angular?**
+    - Stores environment-specific configurations.
+    - Allows different settings for development, production, and other environments.
+    - Example:
+      ```typescript
+      export const environment = {
+        production: false,
+        apiUrl: 'http://localhost:3000/api'
+      };
+      ```
+    - Access environment variables throughout the application.
+    - Simplifies switching between environments by changing configuration files.
+
+72. **How do you improve the performance of an Angular application?**
+    - Implement lazy loading for feature modules.
+    - Use Ahead-of-Time (AOT) compilation for faster initial loads.
+    - Optimize change detection with `OnPush` strategy.
+    - Minimize bundle size with tree shaking and code splitting.
+    - Use efficient data structures and caching mechanisms.
+
+73. **What is Angular Material and how is it used?**
+    - A UI component library for Angular.
+    - Provides pre-built UI components following Google's Material Design guidelines.
+    - Example:
+      ```typescript
+      import { MatButtonModule } from '@angular/material/button';
+      @NgModule({
+        imports: [MatButtonModule],
+        exports: [MatButtonModule]
+      })
+      export class AppModule { }
+      ```
+    - Simplifies and accelerates UI development with consistent and customizable components.
+    - Offers responsive design and accessibility out-of-the-box.
+
+74. **How can you reset a form in Angular after submission?**
+    - Use `form.reset()` to reset the form's state.
+    - Example:
+      ```typescript
+      onSubmit() {
+        this.myForm.reset();
+      }
+      ```
+    - Resetting the form clears all input fields and sets form controls to their initial states.
+    - Optionally, pass an object to `reset()` to set specific default values:
+      ```typescript
+      this.myForm.reset({ name: '', age: null });
+      ```
+
+75. **What is tree shaking in Angular?**
+    - A technique to remove unused code from the final bundle.
+    - Reduces the application size by eliminating dead code.
+    - Enabled by default with the Angular CLI using Webpack.
+    - Example: Unused imports and functions are not included in the production build.
+    - Improves application performance by decreasing load times.
+
+76. **How do you unsubscribe from subscriptions in Angular?**
+    - Use the `unsubscribe` method to prevent memory leaks.
+    - Example:
+      ```typescript
+      private subscription: Subscription;
+      ngOnInit() {
+        this.subscription = this.myService.getData().subscribe();
+      }
+      ngOnDestroy() {
+        this.subscription.unsubscribe();
+      }
+      ```
+    - Use `takeUntil` operator for automatic unsubscription.
+    - Example:
+      ```typescript
+      private destroy$ = new Subject<void>();
+      ngOnInit() {
+        this.myService.getData().pipe(takeUntil(this.destroy$)).subscribe();
+      }
+      ngOnDestroy() {
+        this.destroy$.next();
+        this.destroy$.complete();
+      }
+      ```
+
+77. **What is Angular CLI, and how does it handle component dependencies?**
+    - A command-line interface for Angular development.
+    - Automates project setup, build processes, and code generation.
+    - Handles component dependencies by importing required modules.
+    - Example: `ng generate component my-component` automatically adds the component to the app module.
+    - Provides commands for serving, testing, and deploying Angular applications.
+
+78. **How do you conditionally apply classes in Angular templates?**
+    - Use `ngClass` directive for conditional class application.
+    - Example:
+      ```typescript
+      <div [ngClass]="{ 'active': isActive, 'disabled': isDisabled }">Content</div>
+      ```
+    - Apply multiple classes based on different conditions.
+    - Enhances dynamic styling based on component state.
+
+79. **What is Angular Universal, and how is it used?**
+    - Angular Universal provides server-side rendering (SSR) for Angular applications.
+    - Improves performance and SEO by rendering pages on the server.
+    - Example:
+      ```typescript
+      import { renderModule } from '@angular/platform-server';
+      renderModule(AppServerModule, { document: '<app-root></app-root>', url: '/' })
+        .then(html => console.log(html));
+      ```
+    - Enhances user experience with faster initial page loads and better search engine indexing.
+
+80. **What is the purpose of Angular's view encapsulation?**
+    - Encapsulates component styles to prevent them from affecting other components.
+    - Types:
+      - `Emulated`: Default, emulates Shadow DOM behavior using scoped styles.
+      - `None`: No encapsulation, styles affect the global scope.
+      - `ShadowDom`: Uses native Shadow DOM for true encapsulation.
+    - Example:
+      ```typescript
+      @Component({
+        selector: 'app-my-component',
+        encapsulation: ViewEncapsulation.Emulated,
+        template: '<div>My Component</div>'
+      })
+      export class MyComponent { }
+      ```
+    - Enhances component isolation and style scoping.
+
+81. **How can you add dynamic validation to controls in Angular?**
+    - Use `setValidators` method to dynamically set validators.
+    - Example:
+      ```typescript
+      this.form.get('name').setValidators([Validators.required, Validators.minLength(3)]);
+      this.form.get('name').updateValueAndValidity();
+      ```
+    - Modify validation rules based on runtime conditions.
+    - Enhance form validation flexibility.
+
+82. **What are validators used for in reactive forms?**
+    - Validators enforce rules on form control values.
+    - Built-in validators include `required`, `minLength`, `maxLength`, `pattern`, etc.
+    - Example:
+      ```typescript
+      this.form = this.fb.group({
+        name: ['', [Validators.required, Validators.minLength(3)]]
+      });
+      ```
+    - Custom validators can be created to enforce complex rules.
+    - Ensure form data integrity and validity.
+
+83. **What is Angular Elements, and why is it used?**
+    - Angular Elements allows Angular components to be used as custom elements (web components).
+    - Facilitates integration of Angular components in non-Angular environments.
+    - Example:
+      ```typescript
+      import { createCustomElement } from '@angular/elements';
+      const myElement = createCustomElement(MyComponent, { injector: this.injector });
+      customElements.define('my-element', myElement);
+      ```
+    - Enables reuse of Angular components across different projects and frameworks.
+
+84. **What are the types of validators available for reactive forms in Angular?**
+    - Built-in validators: `required`, `minLength`, `maxLength`, `pattern`, `email`, etc.
+    - Example:
+      ```typescript
+      this.form = this.fb.group({
+        email: ['', [Validators.required, Validators.email]]
+      });
+      ```
+    - Custom validators: Define complex rules as functions.
+    - Async validators: Validate data with asynchronous operations.
+    - Ensure robust form validation to maintain data integrity.
+
+85. **How do you handle large datasets in Angular, either through pagination, infinite scrolling, or local storage?**
+    - Pagination: Split data into pages to reduce load.
+      - Example: Use ngx-pagination library for easy implementation.
+    - Infinite scrolling: Load more data as the user scrolls.
+      - Example: Use ngx-infinite-scroll library.
+    - Local storage: Cache data locally to minimize API calls.
+      - Example: Use `localStorage` or `IndexedDB` for storing data.
+    - Use efficient data structures and lazy loading to optimize performance.
+    - Combine these techniques to handle large datasets effectively.
+
+86. **What are lifecycle hooks in Angular?**
+    - Methods that provide visibility into key moments in the component's lifecycle.
+    - Common hooks include:
+      - `ngOnInit`: Called once the component is initialized.
+      - `ngOnChanges`: Called when input properties change.
+      - `ngDoCheck`: Custom change detection.
+      - `ngAfterViewInit`: Called after the component's view has been initialized.
+      - `ngOnDestroy`: Cleanup before the component is destroyed.
+    - Example:
+      ```typescript
+      ngOnInit() {
+        // Initialization logic here
+      }
+      ngOnDestroy() {
+        // Cleanup logic here
+      }
+      ```
+    - Helps manage component state and resources effectively.
+
+87. **How do you handle CORS errors in Angular?**
+    - Configure the server to include appropriate CORS headers.
+    - Example:
+      ```http
+      Access-Control-Allow-Origin: *
+      Access-Control-Allow-Methods: GET, POST, PUT, DELETE
+      Access-Control-Allow-Headers: Content-Type
+      ```
+    - Use a proxy configuration in Angular during development.
+    - Example:
+      ```json
+      // proxy.conf.json
+      {
+        "/api": {
+          "target": "http://localhost:3000",
+          "secure": false
+        }
+      }
+      ```
+    - Update `angular.json` to use the proxy:
+      ```json
+      "serve": {
+        "options": {
+          "proxyConfig": "src/proxy.conf.json"
+        }
+      }
+      ```
+
+88. **How do you handle errors for observables in Angular?**
+    - Use the `catchError` operator to handle errors.
+    - Example:
+      ```typescript
+      import { catchError } from 'rxjs/operators';
+      this.myService.getData().pipe(
+        catchError(error => {
+          // Handle error
+          return of([]);
+        })
+      ).subscribe();
+      ```
+    - Use `HttpInterceptor` to handle HTTP errors globally.
+    - Example:
+      ```typescript
+      intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+        return next.handle(req).pipe(
+          catchError(error => {
+            // Handle error
+            return throwError(error);
+          })
+        );
+      }
+      ```
+    - Provide user-friendly error messages and log errors for debugging.
+
+89. **What is the difference between NGOnInit and the Constructor in Angular?**
+    - `constructor`: Used for dependency injection and initialization.
+    - `ngOnInit`: Called after Angular initializes the component's input properties.
+    - Example:
+      ```typescript
+      constructor(private service: MyService) {
+        // Dependency injection
+      }
+      ngOnInit() {
+        // Initialization logic here
+      }
+      ```
+    - Use `ngOnInit` for initialization logic to ensure input properties are set.
+    - Separates dependency injection and initialization concerns.
+
+90. **What is the purpose of the app initializer in Angular?**
+    - Runs custom initialization logic during application startup.
+    - Example:
+      ```typescript
+      import { APP_INITIALIZER } from '@angular/core';
+      export function initializeApp(myService: MyService) {
+        return (): Promise<any> => {
+          return myService.loadData();
+        }
+      }
+      @NgModule({
+        providers: [
+          { provide: APP_INITIALIZER, useFactory: initializeApp, deps: [MyService], multi: true }
+        ]
+      })
+      export class AppModule { }
+      ```
+    - Ensures required data or settings are loaded before the application starts.
+    - Enhances control over application startup processes.
+
+91. **What is the purpose of the angular.json file?**
+    - Configuration file for Angular CLI projects.
+    - Contains settings for build, serve, test, and other CLI commands.
+    - Example:
+      ```json
+      {
+        "projects": {
+          "my-app": {
+            "architect": {
+              "build": {
+                "options": {
+                  "outputPath": "dist/my-app",
+                  "index": "src/index.html",
+                  "main": "src/main.ts",
+                  "polyfills": "src/polyfills.ts",
+                  "tsConfig": "tsconfig.app.json"
+                }
+              }
+            }
+          }
+        }
+      }
+      ```
+    - Centralizes project configuration and simplifies management.
+    - Enables customization of CLI behavior and project settings.
+
+92. **How do you configure environment-specific settings in an Angular project?**
+    - Define environment files for different environments (e.g., `environment.ts`, `environment.prod.ts`).
+    - Example:
+      ```typescript
+      // environment.ts
+      export const environment = {
+        production: false,
+        apiUrl: 'http://localhost:3000/api'
+      };
+      // environment.prod.ts
+      export const environment = {
+        production: true,
+        apiUrl: 'https://api.example.com'
+      };
+      ```
+    - Use file replacements in `angular.json` to switch environments.
+    - Example:
+      ```json
+      "fileReplacements": [
+        {
+          "replace": "src/environments/environment.ts",
+          "with": "src/environments/environment.prod.ts"
+        }
+      ]
+      ```
+    - Access environment variables in the application code:
+      ```typescript
+      import { environment } from '../environments/environment';
+      console.log(environment.apiUrl);
+      ```
+
+93. **What is the difference between dependencies and devDependencies in package.json?**
+    - `dependencies`: Libraries required for the application to run.
+    - Example:
+      ```json
+      "dependencies": {
+        "@angular/core": "^12.0.0",
+        "rxjs": "^6.6.0"
+      }
+      ```
+    - `devDependencies`: Tools required for development, testing, and building the application.
+    - Example:
+      ```json
+      "devDependencies": {
+        "@angular/cli": "^12.0.0",
+        "typescript": "^4.2.4"
+      }
+      ```
+    - `dependencies` are included in the production build, while `devDependencies` are not.
+    - Keeps the production bundle lean by excluding development-only packages.
+
+94. **What is the difference between for...of and for...in loops in JavaScript?**
+    - `for...of`: Iterates over iterable objects (arrays, strings, maps, etc.).
+    - Example:
+      ```javascript
+      const arr = [10, 20, 30];
+      for (const value of arr) {
+        console.log(value); // 10, 20, 30
+      }
+      ```
+    - `for...in`: Iterates over enumerable properties of an object.
+    - Example:
+      ```javascript
+      const obj = { a: 1, b: 2, c: 3 };
+      for (const key in obj) {
+        console.log(key); // a, b, c
+      }
+      ```
+    - `for...of` is suitable for iterating over values, while `for...in` is for keys.
+    - Avoid `for...in` for arrays due to potential prototype pollution.
+
+95. **What is data binding in Angular?**
+    - Mechanism for coordinating the component's data with the view.
+    - Types:
+      - Interpolation: `{{ expression }}`
+      - Property binding: `[property]="expression"`
+      - Event binding: `(event)="handler"`
+      - Two-way binding: `[(ngModel)]="property"`
+    - Example:
+      ```typescript
+      <input [value]="name" (input)="name = $event.target.value">
+      <p>Hello, {{ name }}!</p>
+      ```
+    - Facilitates dynamic interaction between the model and the view.
+    - Enhances the responsiveness and interactivity of the application.
+
